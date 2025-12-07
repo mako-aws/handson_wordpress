@@ -27,29 +27,33 @@ VPC構築
 
 ## 手順
 - VPC作成
-  - VPCをCIDRブロック「〜〜」で作成。作成時以下を設定
+  - VPCをCIDRブロック「10.0.0.0/16」で作成。作成時以下を設定
     - DNSホスト名：有効
     - DNS解決：有効
 - サブネット作成
-  - パブリック用サブネット「public-1a」「public-1c」を作成。
-  - プライベート用サブネット「private-1a」「private-1c」を作成
+  - パブリック用サブネット「wp-public-1a-sn」（10.0.1.0/24）、「wp-public-1c」（10.0.2.0/24）を作成。
+  - プライベート用サブネット「wp-private-1a-sn」（10.0.11.0/24）、「wp-private-1c」（10.0.12.0/24）を作成
 - インターネットゲートウェイ作成
   - インターネットゲートウェイを作成
   - VPCにアタッチ
 - Natgatewayを作成
   - EIPを取得
-  - natgatewayを作成
-  - サブネット「public-1a」にアタッチ
+  - Natgatewayを作成
+  - サブネット「wp-public-1a sn」にアタッチ
 - ルートテーブル作成
-  - パブリック用ルートテーブル「public-rt」を作成。0.0.0.0をINGWへルーティング。
-  - サブネット「public-1a」「public-1c」に関連づける
-  - プライベート用ルートテーブル「pryvate-rt」を作成。0.0.0.0をNatgatewayへルーティング。
-  - サブネット「private-1a」「private-1c」に関連づける
+  - パブリック用ルートテーブル「wp-public-rt」を作成。0.0.0.0をINGWへルーティング。
+  - サブネット「wp-public-1a-sn」「wp-public-1c-sn」に関連づける
+  - プライベート用ルートテーブル「wp-private-rt」を作成。0.0.0.0をNatgatewayへルーティング。
+  - サブネット「wp-private-1a-sn」「wp-private-1c-sn」に関連づける
+  - ※Natgatewayの設定削除。（常時稼働を想定して設定したが、本環境ではコスト削減のためNatgatewayは利用時に随時設定する運用とする）
+    - 一旦Natgateway削除しEIPを解放する
+    - ルートテーブルからNatgatewayへのルーティングを削除する
 - セキュリティグループ作成
-  - パブリック用セキュリティグループ「public-sg」を作成する
-  - プライベート用セキュリティグループ「private-sg」を作成する
+  - ALB用セキュリティグループ「wp-alb-sg」を作成する
+  - Webアプリ用セキュリティグループ「wp-webapp-sg」を作成する
+  - DB用セキュリティグループ「wp-db-sg」を作成する
 - DBサブネットグループ作成
-  - サブネット「private-1a」「private-1c」を含んだDBサブネットグループを作成する
+  - サブネット「wp-private-1a-sn」「wp-private-1c-sn」を含んだDBサブネットグループを作成する
 
 
 ## 対応ナレッジ
@@ -59,3 +63,4 @@ VPC構築
 - Auroraの作成には2つ以上の異なるAZのサブネットが必要
 - セキュリティグループの設定はEC2やAurora作成時に実施
 - INGWのアタッチ先はVPC
+- リソースの命名規則は[プロジェクト名]-[識別名]-[リソースタイプ]とした
