@@ -36,7 +36,13 @@ ALBを設定。現時点ではEC2一台のみをターゲットとして設定�
   - アクションのルーティング：ターゲットグループへ転送
   - ターゲットグループ：「wp-ec2-tg」
   - ターゲットグループの維持：有効　一時間
-  - 
+ 
+- Wordpress初期設定
+  - database name：wordpress
+  - user name：wp_1a_rds_master
+  - password：IpUQz3ndXDLWvQ8SzllJ
+  - database host：wp-1a-rds.cdq2sc0sow5f.ap-northeast-1.rds.amazonaws.com
+  - table prefix：wp_
 
 ## 実施後と比較して
   - 用意した手順でハンズオンしたのち、手順通りに進まなかった点をピックアップ
